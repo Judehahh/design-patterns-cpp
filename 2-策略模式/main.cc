@@ -1,16 +1,9 @@
-//简单工厂模式
 #include <iostream>
 #include <sstream>
+#include <CashContext.h>
 #include <CashSuper.h>
 using namespace std;
 
-//现金收费工厂类
-class CashFactory {
-public:
-    static CashSuper* createCashAccept(char type);
-};
-
-//程序主体
 double total = 0.0;
 stringstream ss;
 void btnOK(char);
@@ -28,28 +21,8 @@ int main() {
     }
 }
 
-//现金收费工厂类
-CashSuper* CashFactory::createCashAccept(char type) {
-    CashSuper* cs = nullptr;
-    switch(type) {
-        case 'A':
-        case 'a':
-            cs = new CashNormal();
-            break;
-        case 'B':
-        case 'b':
-            cs = new CashReturn(300, 100);;
-            break;
-        case 'C':
-        case 'c':
-            cs = new CashRebate(0.8);
-            break;
-    }
-    return cs;
-}
-
 void btnOK(char type) {
-    CashSuper* csuper = CashFactory::createCashAccept(type);
+    CashContext* csuper = new CashContext(type);
     
     double txtPrice = 0.0;
     int txtNum = 0;
@@ -58,7 +31,7 @@ void btnOK(char type) {
     cout << "输入商品数量:";
     cin >> txtNum;
 
-    double totalPrices = csuper->acceptCash(txtPrice * txtNum);
+    double totalPrices = csuper->GetResult(txtPrice * txtNum); 
     total += totalPrices;
     ss << "单价" << txtPrice << " 数量: " << txtNum << " 合计: " << totalPrices << endl;
 
